@@ -1,0 +1,23 @@
+{
+  "name": "toji-file",
+  "version": "1.0.0",
+  "description": "Toji File 7 day workout plan",
+  "main": "main.js",
+  "author": "alliseeislight <icecube7035@gmail.com>",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish never"
+  },
+  "build": {
+    "appId": "com.neily.tojifile",
+    "productName": "Toji File",
+    "files": ["main.js", "index.html"],
+    "linux": { "target": ["AppImage"], "category": "Utility" },
+    "win": { "target": ["portable"] },
+    "mac": { "target": ["dmg"] }
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
