@@ -92,15 +92,9 @@ ul{list-style:none;margin-top:12px;border-top:3px solid var(--ink);background:rg
 
 .name small{display:block;font-weight:600;font-size:13px;line-height:1.3;margin-top:4px;color:#4a4845}
 .ex input:checked ~ .name small{color:var(--ash);text-decoration:none}
-.panel{margin-top:16px;border:2px solid var(--ink);background:rgba(236,233,227,.92)}
-.panel summary{font-family:var(--display);font-size:22px;letter-spacing:.03em;padding:12px 14px;cursor:pointer}
-.panel .in{padding:0 14px 14px;font-weight:600;font-size:15px;line-height:1.45}
-.panel ul.tips{border-top:0;background:none;margin:4px 0 0}
-.panel ul.tips li{list-style:disc;margin-left:18px;padding:3px 0}
 .logrow{display:flex;gap:8px;margin-top:8px}
 .logrow input{flex:1;min-width:0;font:inherit;font-weight:800;font-size:18px;padding:10px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
 .logrow button{font-family:var(--display);font-size:20px;padding:0 18px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
-.best{font-family:var(--display);font-size:26px;margin-top:12px}
 .entries{margin-top:6px;font-size:14px;color:#4a4845}
 footer{
   margin-top:34px;border:2px solid var(--ink);padding:12px 14px;background:rgba(236,233,227,.9);
@@ -109,9 +103,31 @@ footer{
 footer svg{width:26px;height:26px;flex:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
+
+.layout{display:block}
+.dash{margin-top:22px;display:grid;gap:16px}
+.card{border:2px solid var(--ink);background:rgba(236,233,227,.92);padding:14px 16px 16px}
+.card h3{font-family:var(--display);font-weight:400;font-size:24px;letter-spacing:.03em}
+.card .sub2{font-family:var(--display);font-size:16px;letter-spacing:.05em;margin:16px 0 0;padding-top:12px;border-top:1.5px solid var(--ink)}
+#chart{width:100%;height:auto;display:block;margin-top:8px;color:var(--ink)}
+.cap{font-size:13px;font-weight:700;color:#4a4845;margin-top:2px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tile{border:2px solid var(--ink);padding:8px 8px 6px;background:var(--paper)}
+.tile b{display:block;font-family:var(--display);font-weight:400;font-size:30px;line-height:1}
+.tile span{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;margin-top:4px;text-transform:uppercase}
+.timer{margin-top:8px}
+#tDisp{font-family:var(--display);font-size:64px;line-height:1;letter-spacing:.02em}
+#tDisp.go{background:var(--ink);color:var(--paper);display:inline-block;padding:0 12px}
+.presets,.tbtns{display:flex;gap:8px;margin-top:8px}
+.presets button,.tbtns button{
+  flex:1;font-family:var(--display);font-size:18px;padding:8px 0 6px;border:2px solid var(--ink);
+  background:var(--paper);color:var(--ink);cursor:pointer}
+.presets button[aria-pressed="true"],.tbtns button.main{background:var(--ink);color:var(--paper)}
+.card p.tip{font-weight:700;font-size:15px;line-height:1.4;margin-top:8px}
+.wline{font-weight:800;font-size:15px;margin-top:8px}
 @media (min-width:1000px){
   html{background:#f1ece8}
-  body{margin:0 0 0 clamp(32px,7vw,120px);max-width:640px;padding-left:0;padding-right:24px}
+  body{margin:0;max-width:none;padding:0 24px 40px clamp(32px,7vw,120px)}
   body::before{
     left:auto;right:0;width:calc(100vh * 0.6667);min-width:40vw;
     background-size:auto 100%;background-position:right top;background-color:transparent;
@@ -119,10 +135,25 @@ footer svg{width:26px;height:26px;flex:none}
     mask-image:linear-gradient(to right,transparent 0,#000 14%);
   }
   h1{font-size:clamp(110px,14vw,190px)}
+  .layout{
+    display:grid;align-items:start;
+    grid-template-columns:minmax(380px,620px) minmax(300px,470px);
+    grid-template-areas:"plan dash" "foot dash";
+    column-gap:clamp(36px,8vw,150px);
+  }
+  .plan{grid-area:plan}
+  .dash{grid-area:dash;margin-top:26px}
+  .layout > footer{grid-area:foot}
+}
+@media (min-width:1000px) and (min-height:1000px){
+  .dash{position:sticky;top:20px}
 }
 </style>
 </head>
 <body>
+
+<div class="layout">
+<div class="plan">
 
 <header>
   <h1>TOJI<br>FILE</h1>
@@ -147,32 +178,49 @@ footer svg{width:26px;height:26px;flex:none}
 
 <button class="reset" id="resetBtn" type="button">Clear this day</button>
 
-<details class="panel" id="warm"><summary>WARM-UP (5 MIN)</summary><div class="in"><ul class="tips">
-<li>Jumping jacks, 1 minute</li><li>Arm circles, 20 each way</li><li>Bodyweight squats, 10</li><li>Scapular push-ups, 10 (arms straight, just move the shoulder blades)</li><li>Cat-cow, 10</li></ul></div></details>
+</div>
 
-<details class="panel"><summary>PROGRESSION (HOW TO GET STRONGER)</summary><div class="in"><ul class="tips">
-<li>Every week, add 1-2 reps to each set.</li>
-<li>When you hit the top of the range on every set, move to a harder version or add a loaded backpack.</li>
-<li>Slow the lowering part to 3-4 seconds. It's free difficulty.</li>
-<li>Rest 60-90 seconds between sets. Shorten it as you improve.</li>
-<li>Find a pull-up bar and add pull-ups to Day 2 and Day 5 the day you do.</li></ul></div></details>
+<aside class="dash">
+  <section class="card">
+    <h3>LAST 7 DAYS</h3>
+    <svg id="chart" viewBox="0 0 420 190" role="img" aria-label="Exercises completed per day over the last 7 days"></svg>
+    <p class="cap" id="chartCap"></p>
+  </section>
 
-<details class="panel"><summary>FUEL (EAT TO BUILD)</summary><div class="in"><ul class="tips">
-<li>You're lean and light, so don't diet. Eat a bit above maintenance.</li>
-<li>Aim for roughly 90-110 g of protein a day. Eggs, beans, lentils, milk, fish, chicken and groundnuts are cheap and work.</li>
-<li>Small meals often suit you: 5-6 times a day.</li>
-<li>Sleep 8 hours. Muscle gets built in your sleep.</li>
-<li>Expect about 0.25-0.5 kg a month. Weigh yourself once a week, same time.</li></ul></div></details>
+  <section class="card">
+    <h3>DATA</h3>
+    <div class="tiles" id="tiles"></div>
+    <div class="sub2">PUSH-UP MAX (ONE SET)</div>
+    <div class="logrow"><input id="maxIn" type="number" inputmode="numeric" min="1" placeholder="Reps in one go"><button type="button" id="maxBtn">LOG</button></div>
+    <div class="entries" id="entries"></div>
+  </section>
 
-<details class="panel"><summary>PUSH-UP MAX LOG</summary><div class="in">
-<div class="best" id="best">Best: -</div>
-<div class="logrow"><input id="maxIn" type="number" inputmode="numeric" min="1" placeholder="Reps in one go"><button type="button" id="maxBtn">LOG</button></div>
-<div class="entries" id="entries"></div></div></details>
+  <section class="card">
+    <h3>USEFUL</h3>
+    <div class="sub2" style="margin-top:8px;border-top:0;padding-top:0">REST TIMER</div>
+    <div class="timer">
+      <div id="tDisp">01:30</div>
+      <div class="presets" id="presets">
+        <button type="button" data-s="60" aria-pressed="false">60s</button>
+        <button type="button" data-s="90" aria-pressed="true">90s</button>
+        <button type="button" data-s="120" aria-pressed="false">120s</button>
+      </div>
+      <div class="tbtns"><button type="button" class="main" id="tGo">START</button><button type="button" id="tReset">RESET</button></div>
+    </div>
+    <div class="sub2">BODY WEIGHT (KG)</div>
+    <div class="logrow"><input id="wIn" type="number" inputmode="decimal" step="0.1" min="20" placeholder="Weekly weigh-in"><button type="button" id="wBtn">LOG</button></div>
+    <div class="wline" id="wLine"></div>
+    <div class="sub2">TIP OF THE DAY</div>
+    <p class="tip" id="tip"></p>
+  </section>
+</aside>
 
 <footer>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3 7.3 7.9.6-6 5.1 1.9 7.7L12 18.1 5.2 22.2l1.9-7.7-6-5.1 7.9-.6z" fill="#141414"/></svg>
   <span>DISCIPLINE. SILENCE. CONSISTENCY. THAT'S THE TOJI WAY.</span>
 </footer>
+
+</div>
 
 <script>
 const PLAN = [
@@ -259,12 +307,11 @@ function renderDay(){
       '</label>';
     li.querySelector("input").onchange = e=>{
       if (e.target.checked) state.done[d+"-"+i]=1; else delete state.done[d+"-"+i];
-      save(); renderTabs(); renderStats();
+      save(); renderTabs(); renderStats(); recordTick(d,i,e.target.checked);
     };
     ul.appendChild(li);
   });
   dayEl.appendChild(ul);
-  document.getElementById("warm").style.display = p.warm ? "" : "none";
 }
 
 function renderStats(){
@@ -279,28 +326,152 @@ function renderStats(){
 function render(){ renderTabs(); renderDay(); renderStats(); }
 
 document.getElementById("resetBtn").onclick = ()=>{
-  PLAN[state.sel].ex.forEach((_,i)=>delete state.done[state.sel+"-"+i]);
-  save(); render();
+  const t = dk(new Date());
+  PLAN[state.sel].ex.forEach((_,i)=>{
+    delete state.done[state.sel+"-"+i];
+    if (activity[t]) delete activity[t][state.sel+"-"+i];
+  });
+  save(); saveAct(); render(); renderDash();
 };
 
 render();
 
-const LOGKEY="toji-pushup-log";
-let log=[];
+/* ---------- dashboard ---------- */
+const ACT="toji-activity-v1", LOGKEY="toji-pushup-log", WTK="toji-weight-log";
+let activity={}, log=[], weights=[];
+try{ activity=JSON.parse(localStorage.getItem(ACT))||{}; }catch(e){}
 try{ log=JSON.parse(localStorage.getItem(LOGKEY))||[]; }catch(e){}
-function renderLog(){
-  const best=log.length?Math.max(...log.map(x=>x.n)):null;
-  document.getElementById("best").textContent="Best: "+(best===null?"-":best);
-  document.getElementById("entries").textContent=log.slice(-6).reverse().map(x=>x.d+": "+x.n).join("   |   ");
+try{ weights=JSON.parse(localStorage.getItem(WTK))||[]; }catch(e){}
+
+function dk(dt){ return dt.getFullYear()+"-"+String(dt.getMonth()+1).padStart(2,"0")+"-"+String(dt.getDate()).padStart(2,"0"); }
+function saveAct(){
+  try{
+    const ks=Object.keys(activity).sort();
+    while(ks.length>120) delete activity[ks.shift()];
+    localStorage.setItem(ACT,JSON.stringify(activity));
+  }catch(e){}
 }
+function saveLists(){
+  try{ localStorage.setItem(LOGKEY,JSON.stringify(log)); localStorage.setItem(WTK,JSON.stringify(weights)); }catch(e){}
+}
+function countOn(k){ return activity[k]?Object.keys(activity[k]).length:0; }
+function recordTick(d,i,on){
+  const t=dk(new Date());
+  activity[t]=activity[t]||{};
+  if(on) activity[t][d+"-"+i]=1; else delete activity[t][d+"-"+i];
+  saveAct(); renderDash();
+}
+function lastDays(n){
+  const out=[], t=new Date();
+  for(let i=n-1;i>=0;i--){
+    const dt=new Date(t.getFullYear(),t.getMonth(),t.getDate()-i);
+    out.push({key:dk(dt),label:dt.toLocaleDateString(undefined,{weekday:"short"}).slice(0,3)});
+  }
+  return out;
+}
+function streak(){
+  const t=new Date(); let s=0, i=countOn(dk(t))===0?1:0;
+  for(;i<120;i++){
+    const dt=new Date(t.getFullYear(),t.getMonth(),t.getDate()-i);
+    if(countOn(dk(dt))>0) s++; else break;
+  }
+  return s;
+}
+function renderChart(){
+  const days=lastDays(7), vals=days.map(x=>countOn(x.key));
+  const max=Math.max(5,...vals), W=420,H=190,pl=28,pb=30,pt=20,ch=H-pb-pt, step=(W-pl-6)/7, bw=34;
+  let g="";
+  [0,Math.round(max/2),max].forEach(v=>{
+    const y=pt+ch-(v/max)*ch;
+    g+='<line x1="'+pl+'" x2="'+(W-4)+'" y1="'+y+'" y2="'+y+'" stroke="currentColor" stroke-opacity="'+(v===0?1:.22)+'" stroke-width="'+(v===0?2:1)+'"/>'+
+       '<text x="'+(pl-7)+'" y="'+(y+4)+'" text-anchor="end" font-size="11" font-weight="800" fill="currentColor">'+v+'</text>';
+  });
+  days.forEach((x,i)=>{
+    const v=vals[i], h=(v/max)*ch, cx=pl+step*i+step/2, y=pt+ch-h;
+    if(v) g+='<rect x="'+(cx-bw/2)+'" y="'+y+'" width="'+bw+'" height="'+h+'" fill="currentColor"/>'+
+              '<text x="'+cx+'" y="'+(y-5)+'" text-anchor="middle" font-size="12" font-weight="800" fill="currentColor">'+v+'</text>';
+    g+='<text x="'+cx+'" y="'+(H-9)+'" text-anchor="middle" font-size="11" font-weight="'+(i===6?800:600)+'" fill="currentColor">'+x.label+'</text>';
+    if(i===6) g+='<rect x="'+(cx-bw/2)+'" y="'+(H-5)+'" width="'+bw+'" height="3" fill="currentColor"/>';
+  });
+  document.getElementById("chart").innerHTML=g;
+  const total=vals.reduce((a,b)=>a+b,0);
+  document.getElementById("chartCap").textContent = total
+    ? total+" exercises done in the last 7 days. Today is underlined."
+    : "Tick an exercise to start your graph.";
+}
+function renderTiles(){
+  const days=lastDays(7), vals=days.map(x=>countOn(x.key));
+  const week=vals.reduce((a,b)=>a+b,0), active=vals.filter(v=>v>0).length;
+  const all=Object.keys(activity).reduce((a,k)=>a+countOn(k),0);
+  const best=log.length?Math.max(...log.map(x=>x.n)):"-";
+  let planDone=0, planTotal=0;
+  PLAN.forEach((p,d)=>p.ex.forEach((_,i)=>{ planTotal++; if(isDone(d,i)) planDone++; }));
+  const T=[[week,"Done, 7 days"],[active+"/7","Active days"],[streak(),"Day streak"],
+           [best,"Push-up best"],[all,"All-time done"],[planDone+"/"+planTotal,"Plan ticked"]];
+  document.getElementById("tiles").innerHTML=T.map(t=>'<div class="tile"><b>'+t[0]+'</b><span>'+t[1]+'</span></div>').join("");
+}
+function renderLogs(){
+  document.getElementById("entries").textContent=log.slice(-5).reverse().map(x=>x.d+": "+x.n).join("   |   ");
+  const w=document.getElementById("wLine");
+  if(!weights.length){ w.textContent="Weigh in once a week, same time of day."; return; }
+  const first=weights[0].kg, now=weights[weights.length-1].kg, diff=Math.round((now-first)*10)/10;
+  w.textContent=now+" kg now"+(weights.length>1?" ("+(diff>0?"+":"")+diff+" kg since your first entry)":"");
+}
+const TIPS=[
+  "Add 1-2 reps to every set each week. When you hit the top of the range on all sets, move to a harder version.",
+  "Slow the lowering part to 3-4 seconds. It's free difficulty.",
+  "You're lean and light. Don't diet, eat a bit above maintenance.",
+  "Aim for roughly 90-110 g of protein a day: eggs, beans, lentils, milk, fish, chicken, groundnuts.",
+  "Small meals often suit you. Aim for 5-6 a day.",
+  "Sleep 8 hours. Muscle gets built while you sleep.",
+  "Warm up for 5 minutes first: jumping jacks, arm circles, squats, scapular push-ups.",
+  "Find a pull-up bar and add pull-ups to Day 2 and Day 5 the day you do.",
+  "Rest 60-90 seconds between sets and shorten it as you improve."
+];
+function renderTip(){ document.getElementById("tip").textContent=TIPS[Math.floor(Date.now()/86400000)%TIPS.length]; }
+function renderDash(){ renderChart(); renderTiles(); renderLogs(); }
+
 document.getElementById("maxBtn").onclick=()=>{
   const el=document.getElementById("maxIn"), n=parseInt(el.value,10);
   if(!n||n<1) return;
-  log.push({n:n,d:new Date().toLocaleDateString()});
-  try{ localStorage.setItem(LOGKEY,JSON.stringify(log)); }catch(e){}
-  el.value=""; renderLog();
+  log.push({n:n,d:dk(new Date())}); saveLists(); el.value=""; renderDash();
 };
-renderLog();
+document.getElementById("wBtn").onclick=()=>{
+  const el=document.getElementById("wIn"), kg=Math.round(parseFloat(el.value)*10)/10;
+  if(!kg||kg<20) return;
+  weights.push({kg:kg,d:dk(new Date())}); saveLists(); el.value=""; renderDash();
+};
+
+/* ---------- rest timer ---------- */
+let tPreset=90, tLeft=90, tInt=null;
+const tDisp=document.getElementById("tDisp"), tGo=document.getElementById("tGo");
+const fmt=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+function tShow(){ tDisp.textContent=tLeft>0?fmt(tLeft):"GO"; tDisp.classList.toggle("go",tLeft<=0); }
+function tStop(){ if(tInt){ clearInterval(tInt); tInt=null; } tGo.textContent="START"; }
+function beep(){
+  try{
+    const c=new (window.AudioContext||window.webkitAudioContext)(), o=c.createOscillator(), g=c.createGain();
+    o.connect(g); g.connect(c.destination); o.frequency.value=880; g.gain.value=.15;
+    o.start(); o.stop(c.currentTime+.35);
+  }catch(e){}
+  try{ navigator.vibrate&&navigator.vibrate([200,100,200]); }catch(e){}
+}
+tGo.onclick=()=>{
+  if(tInt){ tStop(); tGo.textContent="RESUME"; return; }
+  if(tLeft<=0) tLeft=tPreset;
+  tGo.textContent="PAUSE";
+  tInt=setInterval(()=>{ tLeft--; tShow(); if(tLeft<=0){ tStop(); beep(); } },1000);
+};
+document.getElementById("tReset").onclick=()=>{ tStop(); tLeft=tPreset; tShow(); };
+document.querySelectorAll("#presets button").forEach(b=>{
+  b.onclick=()=>{
+    tStop(); tPreset=+b.dataset.s; tLeft=tPreset; tShow();
+    document.querySelectorAll("#presets button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  };
+});
+
+renderDash(); renderTip(); tShow();
+
 </script>
 </body>
 </html>
