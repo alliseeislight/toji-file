@@ -89,6 +89,19 @@ ul{list-style:none;margin-top:12px;border-top:3px solid var(--ink);background:rg
 }
 .reset:active{background:var(--ink);color:var(--paper)}
 
+
+.name small{display:block;font-weight:600;font-size:13px;line-height:1.3;margin-top:4px;color:#4a4845}
+.ex input:checked ~ .name small{color:var(--ash);text-decoration:none}
+.panel{margin-top:16px;border:2px solid var(--ink);background:rgba(236,233,227,.92)}
+.panel summary{font-family:var(--display);font-size:22px;letter-spacing:.03em;padding:12px 14px;cursor:pointer}
+.panel .in{padding:0 14px 14px;font-weight:600;font-size:15px;line-height:1.45}
+.panel ul.tips{border-top:0;background:none;margin:4px 0 0}
+.panel ul.tips li{list-style:disc;margin-left:18px;padding:3px 0}
+.logrow{display:flex;gap:8px;margin-top:8px}
+.logrow input{flex:1;min-width:0;font:inherit;font-weight:800;font-size:18px;padding:10px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
+.logrow button{font-family:var(--display);font-size:20px;padding:0 18px;border:2px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer}
+.best{font-family:var(--display);font-size:26px;margin-top:12px}
+.entries{margin-top:6px;font-size:14px;color:#4a4845}
 footer{
   margin-top:34px;border:2px solid var(--ink);padding:12px 14px;background:rgba(236,233,227,.9);
   display:flex;gap:12px;align-items:center;font-weight:800;font-size:15px;line-height:1.25;
@@ -122,6 +135,28 @@ footer svg{width:26px;height:26px;flex:none}
 
 <button class="reset" id="resetBtn" type="button">Clear this day</button>
 
+<details class="panel" id="warm"><summary>WARM-UP (5 MIN)</summary><div class="in"><ul class="tips">
+<li>Jumping jacks, 1 minute</li><li>Arm circles, 20 each way</li><li>Bodyweight squats, 10</li><li>Scapular push-ups, 10 (arms straight, just move the shoulder blades)</li><li>Cat-cow, 10</li></ul></div></details>
+
+<details class="panel"><summary>PROGRESSION (HOW TO GET STRONGER)</summary><div class="in"><ul class="tips">
+<li>Every week, add 1-2 reps to each set.</li>
+<li>When you hit the top of the range on every set, move to a harder version or add a loaded backpack.</li>
+<li>Slow the lowering part to 3-4 seconds. It's free difficulty.</li>
+<li>Rest 60-90 seconds between sets. Shorten it as you improve.</li>
+<li>Find a pull-up bar and add pull-ups to Day 2 and Day 5 the day you do.</li></ul></div></details>
+
+<details class="panel"><summary>FUEL (EAT TO BUILD)</summary><div class="in"><ul class="tips">
+<li>You're lean and light, so don't diet. Eat a bit above maintenance.</li>
+<li>Aim for roughly 90-110 g of protein a day. Eggs, beans, lentils, milk, fish, chicken and groundnuts are cheap and work.</li>
+<li>Small meals often suit you: 5-6 times a day.</li>
+<li>Sleep 8 hours. Muscle gets built in your sleep.</li>
+<li>Expect about 0.25-0.5 kg a month. Weigh yourself once a week, same time.</li></ul></div></details>
+
+<details class="panel"><summary>PUSH-UP MAX LOG</summary><div class="in">
+<div class="best" id="best">Best: -</div>
+<div class="logrow"><input id="maxIn" type="number" inputmode="numeric" min="1" placeholder="Reps in one go"><button type="button" id="maxBtn">LOG</button></div>
+<div class="entries" id="entries"></div></div></details>
+
 <footer>
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.5l3 7.3 7.9.6-6 5.1 1.9 7.7L12 18.1 5.2 22.2l1.9-7.7-6-5.1 7.9-.6z" fill="#141414"/></svg>
   <span>DISCIPLINE. SILENCE. CONSISTENCY. THAT'S THE TOJI WAY.</span>
@@ -129,23 +164,49 @@ footer svg{width:26px;height:26px;flex:none}
 
 <script>
 const PLAN = [
-  {tag:"DAY 1", title:"PUSH DAY (STRENGTH)", ex:[
-    ["Bench Press","4x6-8"],["Overhead Press","4x6-8"],["Incline Dumbbell Press","3x8-10"],["Dips","3x10-12"],["Tricep Pushdown","3x12-15"]]},
-  {tag:"DAY 2", title:"PULL DAY (STRENGTH)", ex:[
-    ["Deadlift","4x5"],["Pull-Ups","4x8-10"],["Barbell Row","4x8-10"],["Lat Pulldown","3x10-12"],["Bicep Curl","3x12-15"]]},
-  {tag:"DAY 3", title:"LEG DAY (POWER)", ex:[
-    ["Squat","4x6-8"],["Romanian Deadlift","4x8-10"],["Leg Press","3x10-12"],["Leg Extension","3x12-15"],["Calf Raises","4x15-20"]]},
-  {tag:"DAY 4", title:"CONDITIONING & CORE", ex:[
-    ["HIIT Sprint","10x30 sec"],["Hanging Leg Raise","4x15"],["Plank","4x1 min"],["Russian Twist","4x20"],["Mountain Climbers","4x30 sec"]]},
-  {tag:"DAY 5", title:"UPPER BODY (HYPERTROPHY)", ex:[
-    ["Incline Bench Press","4x10"],["Seated Cable Row","4x10"],["Lateral Raise","3x12-15"],["Face Pull","3x15"],["Hammer Curl","3x12-15"]]},
-  {tag:"DAY 6", title:"LOWER BODY (HYPERTROPHY)", ex:[
-    ["Front Squat","4x10"],["Walking Lunge","3x12 each leg"],["Hamstring Curl","3x12-15"],["Hip Thrust","3x10-12"],["Standing Calf Raise","4x15-20"]]},
-  {tag:"DAY 7", title:"REST & RECOVERY", ex:[
-    ["Stretching / Mobility",""],["Light Cardio (30 min walk)",""],["Focus on Sleep & Nutrition",""]]}
+  {tag:"DAY 1", title:"PUSH DAY (STRENGTH)", warm:true, ex:[
+    ["Decline Push-Up","4x15-20","Feet up on a chair or bed. Chest to the floor."],
+    ["Archer Push-Up","3x6-8 each side","Wide hands, shift weight to one arm."],
+    ["Pike Push-Up","4x10-12","Hips high, head goes between your hands. Builds shoulders."],
+    ["Chair Dips","3x15-20","Hands on a sturdy chair, feet on another or the floor."],
+    ["Diamond Push-Up","3x12-15","Hands together under your chest."]]},
+  {tag:"DAY 2", title:"PULL DAY (STRENGTH)", warm:true, ex:[
+    ["Table Row","4x10-15","Lie under a sturdy table, grip the edge, pull your chest up."],
+    ["Backpack Bent-Over Row","4x12","Load a backpack with books, hinge forward, pull to your belly."],
+    ["Towel Door Row","3x12","Towel around a SOLID door handle, lean back, pull in. Test the door first."],
+    ["Backpack Curl","3x12-15","Slow on the way down."],
+    ["Superman Pull","3x12-15","Face down, arms out, pull elbows to your ribs and squeeze your back."]]},
+  {tag:"DAY 3", title:"LEG DAY (POWER)", warm:true, ex:[
+    ["Jump Squat","4x10-12","Explode up, land soft."],
+    ["Bulgarian Split Squat","4x8-10 each leg","Back foot on a chair. Add a loaded backpack when easy."],
+    ["Pistol Squat to Chair","3x5-6 each leg","Sit down to a chair on one leg and stand back up."],
+    ["Single-Leg Calf Raise","4x15-20 each leg","Hold a wall for balance. Full range."],
+    ["Single-Leg Glute Bridge","3x12 each leg","Squeeze at the top for 1 second."]]},
+  {tag:"DAY 4", title:"CONDITIONING & CORE", warm:false, ex:[
+    ["HIIT Sprint","10x30 sec","30 sec hard, 30 sec walk. Outside."],
+    ["Lying Leg Raise","4x15","Lower back stays on the floor."],
+    ["Plank","4x1 min","Squeeze glutes and abs."],
+    ["Russian Twist","4x20","Hold a book or backpack for more load."],
+    ["Mountain Climbers","4x30 sec","Fast knees, flat back."]]},
+  {tag:"DAY 5", title:"UPPER BODY (HYPERTROPHY)", warm:true, ex:[
+    ["Slow Tempo Push-Up","4x10","4 seconds down, pause, push up hard."],
+    ["Slow Table Row","4x10","2 seconds up, 3 seconds down."],
+    ["Pseudo Planche Push-Up","3x8-10","Hands by your hips, lean forward. Hard on shoulders and chest."],
+    ["Bottle Lateral Raise","3x12-15","Water bottles or a light backpack. Wide shoulders start here."],
+    ["Backpack Hammer Curl","3x12-15","Hold the straps, palms facing in."]]},
+  {tag:"DAY 6", title:"LOWER BODY (HYPERTROPHY)", warm:true, ex:[
+    ["Tempo Backpack Squat","4x12-15","3 seconds down, no bouncing."],
+    ["Walking Lunge","3x12 each leg","Loaded backpack on your back when it gets easy."],
+    ["Single-Leg Romanian Deadlift","3x10 each leg","Hinge at the hips, back flat."],
+    ["Wall Sit","3x45-60 sec","Thighs parallel to the floor."],
+    ["Standing Calf Raise","4x20","Backpack on, slow and full range."]]},
+  {tag:"DAY 7", title:"REST & RECOVERY", warm:false, ex:[
+    ["Stretching / Mobility","","10-15 minutes, hips, shoulders, hamstrings."],
+    ["Light Cardio (30 min walk)","",""],
+    ["Focus on Sleep & Nutrition","","Eat well, sleep 8 hours."]]}
 ];
 
-const KEY = "toji-file-v1";
+const KEY = "toji-file-v2";
 let state = {sel:0, done:{}};
 try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) state = s; } catch(e){}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e){} };
@@ -174,14 +235,14 @@ function renderDay(){
   const d = state.sel, p = PLAN[d];
   dayEl.innerHTML = '<div class="day-head"><span class="day-tag">'+p.tag+'</span><h2>'+p.title.replace("&","&amp;")+'</h2></div>';
   const ul = document.createElement("ul");
-  p.ex.forEach(([name,rx],i)=>{
+  p.ex.forEach(([name,rx,note],i)=>{
     const li = document.createElement("li");
     const id = "ex-"+d+"-"+i;
     li.innerHTML =
       '<label class="ex" for="'+id+'">'+
       '<input type="checkbox" id="'+id+'"'+(isDone(d,i)?' checked':'')+'>'+
       '<span class="box">'+CHECK+'</span>'+
-      '<span class="name">'+name+'</span>'+
+      '<span class="name">'+name+(note?'<small>'+note+'</small>':'')+'</span>'+
       (rx?'<span class="rx">'+rx+'</span>':'')+
       '</label>';
     li.querySelector("input").onchange = e=>{
@@ -191,6 +252,7 @@ function renderDay(){
     ul.appendChild(li);
   });
   dayEl.appendChild(ul);
+  document.getElementById("warm").style.display = p.warm ? "" : "none";
 }
 
 function renderStats(){
@@ -210,6 +272,23 @@ document.getElementById("resetBtn").onclick = ()=>{
 };
 
 render();
+
+const LOGKEY="toji-pushup-log";
+let log=[];
+try{ log=JSON.parse(localStorage.getItem(LOGKEY))||[]; }catch(e){}
+function renderLog(){
+  const best=log.length?Math.max(...log.map(x=>x.n)):null;
+  document.getElementById("best").textContent="Best: "+(best===null?"-":best);
+  document.getElementById("entries").textContent=log.slice(-6).reverse().map(x=>x.d+": "+x.n).join("   |   ");
+}
+document.getElementById("maxBtn").onclick=()=>{
+  const el=document.getElementById("maxIn"), n=parseInt(el.value,10);
+  if(!n||n<1) return;
+  log.push({n:n,d:new Date().toLocaleDateString()});
+  try{ localStorage.setItem(LOGKEY,JSON.stringify(log)); }catch(e){}
+  el.value=""; renderLog();
+};
+renderLog();
 </script>
 </body>
 </html>
